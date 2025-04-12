@@ -23,7 +23,7 @@ const Sidebar = () => {
       {!isOpen && (
         <button
           onClick={toggleSidebar}
-          className="lg:hidden p-4 text-white z-50 relative"
+          className="lg:hidden p-4 z-50 relative text-dark-bg dark:text-white"
         >
           <Menu size={28} />
         </button>

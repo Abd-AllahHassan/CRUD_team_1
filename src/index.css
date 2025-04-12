@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
     /* Fonts */
     --font-sans: Inter, sans-serif;
@@ -14,4 +16,6 @@
     --color-dark-text: #1e1e1e;
   }
 
-
+  body {
+    font-family: 'Inter', sans-serif;
+  }
