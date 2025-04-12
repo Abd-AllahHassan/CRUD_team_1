@@ -1,3 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+    /* Fonts */
+    --font-sans: Inter, sans-serif;
+  
+    /* Colors */
+    --color-dark-bg: #1E1E2F;
+    --color-dark-card: #2F2F45;
+    --color-card-blue: #007ACC;
+    --color-dark-sidebar: #2C2C3E;
+    --color-accent: #8f9fff;
+    --color-light-text: #ffffff;
+    --color-dark-text: #1e1e1e;
+  }
+
+

@@ -1,17 +1,26 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import EmptyPage from './pages/EmptyPage'
+import NotFound from './pages/NotFound'
+import DashboardLayout from './layouts/DashboardLayout'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <h1 className="text-3xl font-bold text-blue-500">
-      Hello Tailwind!
-    </h1>
-    </>
+    <Routes>
+      {/* Layout-wrapped routes */}
+      <Route element={<DashboardLayout />}>
+        <Route path="/" element={<EmptyPage />} />
+        <Route path="/add-customer" />
+      </Route>
+
+      {/* Not Found Page */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+    
+
   )
 }
 
