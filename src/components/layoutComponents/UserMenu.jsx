@@ -2,14 +2,22 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, User, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useAuth } from '../../context/AuthContext.jsx';
+import defaultAvatar from '../../assets/avatar.webp'; 
 
 const UserMenu = () => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
+  const { logout } = useAuth();
+
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const username = storedUser?.username || 'Guest';
+  const email = storedUser?.email || 'Not Available';
+
+  const avatar = defaultAvatar;
 
   const toggleMenu = () => setOpen((prev) => !prev);
 
-  // Optional: close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -21,33 +29,31 @@ const UserMenu = () => {
   }, []);
 
   const handleLogout = () => {
+    logout();
     setOpen(false);
     toast.success('You have been logged out!');
-    // Add your logout logic here
   };
 
   return (
     <div ref={menuRef} className="relative w-full max-w-xs">
-      {/* User Menu Button */}
       <div
         className="flex items-center justify-between bg-dark-card p-3 rounded cursor-pointer hover:bg-dark-bg transition"
         onClick={toggleMenu}
       >
         <div className="flex items-center gap-3">
           <img
-            src="https://i.pravatar.cc/40"
+            src={avatar}
             alt="avatar"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full object-cover"
           />
           <div>
-            <p className="text-sm font-medium">John Doe</p>
+            <p className="text-sm font-medium">{username}</p>
             <p className="text-xs text-gray-400">Admin</p>
           </div>
         </div>
         {open ? <ChevronUp /> : <ChevronDown />}
       </div>
 
-      {/* Dropdown Menu */}
       {open && (
         <div className="absolute bottom-16 right-0 w-full bg-dark-card border border-dark-bg rounded shadow-md z-50">
           <Link

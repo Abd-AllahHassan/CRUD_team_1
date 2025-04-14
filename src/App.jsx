@@ -7,6 +7,7 @@ import NotFound from './pages/NotFound';
 import AddCustomer from './pages/AddCustomer'
 import Layout from './layouts/Layout';
 import MainLayout from './layouts/MainLayout';
+import  ProfilePage  from './pages/ProfilePage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       {/* Protected Dashboard */}
       <Route element={<MainLayout />}>
         <Route path="/home" element={<EmptyPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/add-customer" element={<AddCustomer />} />
       </Route>
 
