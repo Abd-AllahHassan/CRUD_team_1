@@ -19,3 +19,49 @@
   body {
     font-family: 'Inter', sans-serif;
   }
+
+  .profile-container {
+    padding: 2rem;
+  }
+  
+  .profile-header {
+    text-align: center;
+  }
+  
+  .profile-details {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .profile-actions {
+    margin-top: 2rem;
+    text-align: center;
+  }
+ 
+  /* Light mode Toast styles */
+[data-theme="light"] .Toastify__toast {
+  background-color: #ffffff;
+  color: #000;
+}
+
+[data-theme="dark"] .Toastify__toast {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Customize toast text, success, error, etc. */
+[data-theme="dark"] .Toastify__toast--success {
+  background-color: #28a745;
+}
+
+[data-theme="light"] .Toastify__toast--error {
+  background-color: #dc3545;
+}

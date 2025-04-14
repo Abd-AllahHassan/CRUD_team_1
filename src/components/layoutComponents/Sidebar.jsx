@@ -51,7 +51,7 @@ const Sidebar = () => {
             <div className="flex-grow px-6">
               <nav className="flex flex-col gap-4">
                 <NavLink
-                  to="/"
+                  to="/home"
                   onClick={handleLinkClick}
                   className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
                 >
@@ -82,7 +82,7 @@ const Sidebar = () => {
         <div className="flex-grow p-6">
           <nav className="flex flex-col gap-4">
             <NavLink
-              to="/"
+              to="/home"
               className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
             >
               <Home size={20} />

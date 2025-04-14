@@ -1,23 +1,78 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+
 const Navbar = () => {
+  const [search, setSearch] = useState('');
+  const [users, setUsers] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const token = localStorage.getItem("token"); // or sessionStorage, or Redux state
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get("https://crud-server-liard.vercel.app/api/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.error("Failed to fetch users:", err);
+    }
+  };
+
+  // Handle search input
+  const handleSearch = () => {
+    if (search.length === 0) {
+      setFiltered([]);
+      return;
+    }
+
+    const firstLetter = search.charAt(0).toLowerCase();
+
+    const results = users.filter((user) =>
+      user.firstName.toLowerCase().startsWith(firstLetter)
+    );
+
+    setFiltered(results);
+  };
+
   return (
-    <div className="bg-gray-200 dark:bg-dark-bg text-dark-text dark:text-white p-4 flex items-center justify-between flex-col sm:flex-row">
+    <div className="bg-gray-200 dark:bg-dark-bg text-dark-text dark:text-white p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between">
       <h1 className="text-3xl font-bold">
         Course<sup className="text-2xl">4</sup>arab
       </h1>
-      
-      {/* Search Bar and Button Container */}
-      <div className="flex items-center w-full sm:w-auto mt-4 sm:mt-0 gap-2">
-        {/* Search Input */}
-        <input
-          type="text"
-          placeholder="Search..."
-          className="bg-white dark:bg-gray-800 text-black dark:text-white text-sm px-4 py-2 rounded-md outline-none w-full sm:w-52"
-        />
-        
-        {/* Search Button */}
-        <button className="bg-transparent border-2 border-green-500 text-green-500 text-sm px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition hidden sm:block">
-          Search
-        </button>
+
+      {/* Search Area */}
+      <div className="relative w-full sm:w-auto mt-4 sm:mt-0">
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="bg-white dark:bg-gray-800 text-black dark:text-white text-sm px-4 py-2 rounded-md outline-none w-full sm:w-52"
+          />
+          <button
+            onClick={handleSearch}
+            className="bg-transparent border-2 border-green-500 text-green-500 text-sm px-4 py-2 rounded-md hover:bg-green-500 hover:text-white transition hidden sm:block"
+          >
+            Search
+          </button>
+        </div>
+
+        {/* Filtered User Menu */}
+        {filtered.length > 0 && (
+          <div className="absolute top-full mt-2 w-full bg-white dark:bg-gray-700 border rounded shadow-md max-h-60 overflow-y-auto z-10">
+            {filtered.map((user) => (
+              <div
+                key={user._id}
+                className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer"
+              >
+                {user.firstName} {user.lastName}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
