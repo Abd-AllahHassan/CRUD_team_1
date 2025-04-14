@@ -8,7 +8,16 @@ const DarkModeToggle = () => {
   // On initial load, check the stored theme in localStorage
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    setDarkMode(storedTheme === "dark" || (storedTheme === null && window.matchMedia("(prefers-color-scheme: dark)").matches));
+    if (storedTheme) {
+      setDarkMode(storedTheme === "dark");
+      // Apply the stored theme to the HTML element
+      document.documentElement.setAttribute("data-theme", storedTheme);
+    } else {
+      // Fallback to user's system preference if no theme is stored
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      setDarkMode(systemPreference === "dark");
+      document.documentElement.setAttribute("data-theme", systemPreference);
+    }
   }, []);
 
   // Handle theme toggle
