@@ -7,6 +7,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext'; // <-- import AuthContext
+import {Helmet} from "react-helmet";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -55,6 +56,10 @@ export default function Login() {
   });
 
   return (
+    <>
+      <Helmet>
+                    <title>Login</title>
+                </Helmet>
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -147,5 +152,6 @@ export default function Login() {
         </p>
       </div>
     </motion.div>
+    </>
   );
 }
