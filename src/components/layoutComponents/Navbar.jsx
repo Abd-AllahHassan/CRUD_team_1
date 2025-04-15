@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const Navbar = () => {
   const [search, setSearch] = useState('');
   const [users, setUsers] = useState([]);
   const [filtered, setFiltered] = useState([]);
-  const token = localStorage.getItem("token"); // or sessionStorage, or Redux state
+  const token = localStorage.getItem("token");
 
   const fetchUsers = async () => {
     try {
@@ -14,13 +15,16 @@ const Navbar = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data);
+      setUsers(res.data);
     } catch (err) {
       console.error("Failed to fetch users:", err);
     }
   };
 
-  // Handle search input
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
   const handleSearch = () => {
     if (search.length === 0) {
       setFiltered([]);
@@ -28,16 +32,19 @@ const Navbar = () => {
     }
 
     const firstLetter = search.charAt(0).toLowerCase();
-
     const results = users.filter((user) =>
       user.firstName.toLowerCase().startsWith(firstLetter)
     );
-
     setFiltered(results);
   };
 
   return (
-    <div className="bg-gray-200 dark:bg-dark-bg text-dark-text dark:text-white p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between">
+    <motion.div
+      className="bg-gray-200 dark:bg-dark-bg text-dark-text dark:text-white p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       <h1 className="text-3xl font-bold">
         Course<sup className="text-2xl">4</sup>arab
       </h1>
@@ -74,7 +81,7 @@ const Navbar = () => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
