@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, UserPlus, Menu, X } from 'lucide-react';
 import UserMenu from './UserMenu';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,10 +12,32 @@ const Sidebar = () => {
   };
 
   const handleLinkClick = () => {
-    // Only close sidebar on small screens
     if (window.innerWidth < 1024) {
       setIsOpen(false);
     }
+  };
+
+  // Animation for mobile sidebar
+  const mobileSidebarVariants = {
+    hidden: { x: '-100%' },
+    visible: {
+      x: 0,
+      transition: { type: 'spring', stiffness: 300, damping: 30 },
+    },
+    exit: {
+      x: '-100%',
+      transition: { duration: 0.3 },
+    },
+  };
+
+  // Animation for desktop sidebar on initial load
+  const desktopSidebarVariants = {
+    hidden: { x: -100, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100, damping: 20 },
+    },
   };
 
   return (
@@ -29,56 +52,66 @@ const Sidebar = () => {
         </button>
       )}
 
-      {/* Overlay and Sidebar for small screens */}
-      {isOpen && (
-        <div className="fixed inset-0 z-40 flex">
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 bg-black/50"
-            onClick={toggleSidebar}
-          ></div>
+      {/* Mobile Sidebar */}
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-40 flex">
+            {/* Backdrop */}
+            <div
+              className="fixed inset-0 bg-black/50"
+              onClick={toggleSidebar}
+            ></div>
 
-          {/* Sidebar */}
-          <aside className="relative z-50 bg-dark-sidebar text-light-text w-64 min-h-screen flex flex-col transition-all duration-300 ease-in-out">
-            {/* Close (X) Icon */}
-            <div className="flex justify-end p-4">
-              <button onClick={toggleSidebar} className="text-white">
-                <X size={24} />
-              </button>
-            </div>
+            {/* Animated Sidebar */}
+            <motion.aside
+              className="relative z-50 bg-dark-sidebar text-light-text w-64 min-h-screen flex flex-col"
+              variants={mobileSidebarVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+            >
+              <div className="flex justify-end p-4">
+                <button onClick={toggleSidebar} className="text-white">
+                  <X size={24} />
+                </button>
+              </div>
 
-            {/* Navigation Links */}
-            <div className="flex-grow px-6">
-              <nav className="flex flex-col gap-4">
-                <NavLink
-                  to="/home"
-                  onClick={handleLinkClick}
-                  className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
-                >
-                  <Home size={20} />
-                  <span>Home</span>
-                </NavLink>
-                <NavLink
-                  to="/add-customer"
-                  onClick={handleLinkClick}
-                  className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
-                >
-                  <UserPlus size={20} />
-                  <span>Add Customer</span>
-                </NavLink>
-              </nav>
-            </div>
+              <div className="flex-grow px-6">
+                <nav className="flex flex-col gap-4">
+                  <NavLink
+                    to="/home"
+                    onClick={handleLinkClick}
+                    className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
+                  >
+                    <Home size={20} />
+                    <span>Home</span>
+                  </NavLink>
+                  <NavLink
+                    to="/add-customer"
+                    onClick={handleLinkClick}
+                    className="flex items-center gap-3 p-2 rounded hover:bg-card-blue hover:text-white transition-colors"
+                  >
+                    <UserPlus size={20} />
+                    <span>Add Customer</span>
+                  </NavLink>
+                </nav>
+              </div>
 
-            {/* User Menu at Bottom */}
-            <div className="p-6">
-              <UserMenu />
-            </div>
-          </aside>
-        </div>
-      )}
+              <div className="p-6">
+                <UserMenu />
+              </div>
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
 
-      {/* Sidebar for large screens */}
-      <aside className="hidden lg:flex flex-col justify-between bg-dark-sidebar text-light-text w-64 min-h-screen">
+      {/* Animated Desktop Sidebar on load */}
+      <motion.aside
+        className="hidden lg:flex flex-col justify-between bg-dark-sidebar text-light-text w-64 min-h-screen"
+        variants={desktopSidebarVariants}
+        initial="hidden"
+        animate="visible"
+      >
         <div className="flex-grow p-6">
           <nav className="flex flex-col gap-4">
             <NavLink
@@ -101,7 +134,7 @@ const Sidebar = () => {
         <div className="p-6">
           <UserMenu />
         </div>
-      </aside>
+      </motion.aside>
     </div>
   );
 };
