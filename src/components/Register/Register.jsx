@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import {Helmet} from "react-helmet";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
@@ -61,6 +62,9 @@ export default function Register() {
 
   return (
     <>
+     <Helmet>
+                <title>Register</title>
+            </Helmet>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
